@@ -1,5 +1,9 @@
 import fourgsms as sms
-mySMS = sms.SMS(sms.secrets.ip, sms.secrets.userid, sms.secrets.password)
-number = "01234567890"
-message = "This is a test text"
-mySMS.send(number, message)
+import time
+mySMS = sms.SMS(sms.secrets.ip)
+mySMS.logon(sms.secrets.userid, sms.secrets.password)
+mySMS.send(sms.secrets.number, "First message")
+time.sleep(5.0)
+mySMS.send(sms.secrets.number, "Second message")
+time.sleep(5.0)
+mySMS.send(sms.secrets.number, "Third message")

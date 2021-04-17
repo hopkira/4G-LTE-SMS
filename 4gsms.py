@@ -1,39 +1,48 @@
 import requests
+from requests.exceptions import HTTPError
 import argparse
+import urllib
+import secrets
 
-class SMS(ip, userid, password):
-    def __init__(self,self.ip,):
-        print("SMS gateway started on",string(self.ip))
+print('Gateway address:', secrets.ip)
+print('Default number:', secrets.number)
+
+class SMS():
+    def __init__(self, ip, userid, password):
+        self.ip = ip
+        self.userid = userid
+        self.password = password
+        print('SMS gateway started on',self.ip)
     def send (self, number, message):
-        print("Message",string(message),"sent to",string(number))    
+        r1_params = {'un':self.userid, 'password': self.password, 'rd':'/uir/status.htm', 'rd2':'/uir/wanst.htm', 'Nrd':1 }
+        r2_params = {}
+        r3_params = {"Ncmd":2}
+        try:
+            r1 = requests.get('http://192.168.1.1/log/in',params=r1_params)
+            r2 = requests.get('http://192.168.1.1/smsmsg.htm',params = r2_params, cookies=r1.cookies)
+            r3 = requests.get('http://192.168.1.1/sms2.htm', params = r3_params, cookies=r1.cookies)
+        except HTTPError as http_err:
+            print('HTTP error occurred:', http_err)
+        except Exception as err:
+            print('Error occurred:', err)
+        else:
+            print("Message",str(message),"sent to",str(number))    
 
 def main():
-    parser = argparse.ArgumentParser(description='Creates 4G LTE SMS gateway.')
-    parser.add_argument('-n','number',
-                        type=string,
-                        default="",
-                        nargs='?',
+    parser = argparse.ArgumentParser(description='Sends SMS message via 4G/LTE router.')
+    parser.add_argument('-n','--number',
+                        type=str,
+                        default="07802461448",
                         help='Telephone number to send to')
-    parser.add_argument('-m', 'message',
-                        type=string,
+    parser.add_argument('-m', '--message',
+                        type=str,
                         default="Hello from K9!",
-                        nargs='?',
                         help='Message of the text to send')
-    parser.add_argument('-i', 'ip_address',
-                        type=string,
-                        default="192.168.1.1",
-                        nargs='?',
-                        help='Address of the 4G router')
-    parser.add_argument('-t', '--test',
-                        action='store_true',
-                        help='execute in simulation mode')
     args = parser.parse_args()
-    sim = args.test
-
-    r1 = requests.get('http://192.168.1.1/log/in?un=admin&password&rd&rd=%2Fuir%2Fstatus.htm&rd2=%2Fuir%2Fwanst.htm&Nrd=1
-    ')
-    r2 = requests.get(' http://192.168.1.1/smsmsg.htm?Nsend=1&Nmsgindex=0&S801E2700=6979555555&S801E2800=Test%20send%20sms,cookies=r1.cookies)
-    r3 = requests.get('http://192.168.1.1/sms2.htm?Ncmd=2', cookies=r1.cookies)
+    number = args.number
+    message = args.message
+    mySMS = SMS(secrets.ip, secrets.userid, secrets.password)
+    mySMS.send(number, message)
 
 if __name__ == '__main__':
     main()

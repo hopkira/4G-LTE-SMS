@@ -10,6 +10,7 @@ git clone https://github.com/hopkira/4G-LTE-SMS.git
 ~~~
 2. In the resulting directory create a secrets.py file 
 ~~~bash
+cd 4G-LTE-SMS
 nano secrets.py
 ~~~
 3. Add the following content
@@ -21,7 +22,7 @@ ip="192.168.1.1" # the IP address of your router
 ~~~
 4. You can now use this program from the command line:
 ~~~bash
-python3 4gsms.py -m 'This is my message' -n 'phone_no_to_text'
+python3 fourgsms.py -m 'This is my message' -n 'phone_no_to_text'
 ~~~
 5. Alternatively you can import it as a python module and use it in your own programs
 ~~~python

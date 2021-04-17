@@ -25,9 +25,8 @@ python3 4gsms.py -m 'This is my message' -n 'phone_no_to_text'
 ~~~
 5. Alternatively you can import it as a python module and use it in your own programs
 ~~~python
-import 4gsms as sms
-import secrets
-mySMS = SMS(secrets.ip, secrets.userid, secrets.password)
+import fourgsms as sms
+mySMS = sms.SMS(sms.secrets.ip, sms.secrets.userid, sms.secrets.password)
 number = "01234567890"
 message = "This is a test text"
 mySMS.send(number, message)

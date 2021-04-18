@@ -86,10 +86,6 @@ def main():
     mySMS = SMS(secrets.ip)
     mySMS.logon(secrets.userid, secrets.password)
     mySMS.send(number, message)
-    time.sleep(5.0)
-    mySMS.send(number, "Second message")
-    time.sleep(5.0)
-    mySMS.send(number, "Third message")
 
 if __name__ == '__main__':
     main()
